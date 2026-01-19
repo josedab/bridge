@@ -1,0 +1,20 @@
+{
+  "name": "basic-openapi-example",
+  "version": "1.0.0",
+  "description": "Basic example of using Bridge with OpenAPI",
+  "type": "module",
+  "scripts": {
+    "generate": "bridge generate -i ./petstore.yaml -o ./src/generated",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@bridge/core": "workspace:*",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0"
+  }
+}

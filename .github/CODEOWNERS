@@ -1,0 +1,17 @@
+# Default owners for everything in the repo
+* @bridge-codes/maintainers
+
+# CI/CD configuration
+/.github/ @bridge-codes/maintainers
+
+# Core parser logic
+/src/parsers/ @bridge-codes/maintainers
+
+# Generator implementations
+/src/generators/ @bridge-codes/maintainers
+
+# CLI
+/src/cli/ @bridge-codes/maintainers
+
+# Tests
+/tests/ @bridge-codes/maintainers

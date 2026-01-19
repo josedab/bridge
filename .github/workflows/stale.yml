@@ -1,0 +1,56 @@
+name: Stale Issues and PRs
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+  workflow_dispatch:  # Allow manual triggers
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          # Issue configuration
+          stale-issue-message: >
+            This issue has been automatically marked as stale because it has not had
+            recent activity. It will be closed in 14 days if no further activity occurs.
+            If this issue is still relevant, please comment or remove the stale label.
+          close-issue-message: >
+            This issue has been automatically closed due to inactivity. Feel free to
+            reopen it if you believe it's still relevant or if you have additional information.
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
+
+          # PR configuration
+          stale-pr-message: >
+            This pull request has been automatically marked as stale because it has not had
+            recent activity. It will be closed in 14 days if no further activity occurs.
+            If this PR is still a work in progress, please comment or push new changes.
+          close-pr-message: >
+            This pull request has been automatically closed due to inactivity. Feel free to
+            reopen it if you'd like to continue working on it.
+          days-before-pr-stale: 60
+          days-before-pr-close: 14
+
+          # Labels
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+
+          # Exemptions - don't mark these as stale
+          exempt-issue-labels: 'pinned,security,bug,enhancement,good first issue,help wanted'
+          exempt-pr-labels: 'pinned,security,work in progress'
+
+          # Only process issues/PRs in certain states
+          only-labels: ''
+          operations-per-run: 100
+
+          # Don't remove stale label when there's activity
+          remove-stale-when-updated: true
+
+          # Enable for both issues and PRs
+          enable-statistics: true

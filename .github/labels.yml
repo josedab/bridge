@@ -1,0 +1,107 @@
+# GitHub Labels Configuration
+# Apply with: gh label import .github/labels.yml
+
+# Priority labels
+- name: "priority: critical"
+  color: "b60205"
+  description: "Must be fixed immediately"
+
+- name: "priority: high"
+  color: "d93f0b"
+  description: "Should be addressed soon"
+
+- name: "priority: medium"
+  color: "fbca04"
+  description: "Normal priority"
+
+- name: "priority: low"
+  color: "0e8a16"
+  description: "Nice to have"
+
+# Type labels
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "type: feature"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "type: enhancement"
+  color: "84b6eb"
+  description: "Improvement to existing functionality"
+
+- name: "type: documentation"
+  color: "0075ca"
+  description: "Improvements or additions to documentation"
+
+- name: "type: test"
+  color: "bfd4f2"
+  description: "Adding or improving tests"
+
+- name: "type: refactor"
+  color: "d4c5f9"
+  description: "Code refactoring without behavior change"
+
+# Status labels
+- name: "status: needs triage"
+  color: "ededed"
+  description: "Needs maintainer review"
+
+- name: "status: confirmed"
+  color: "91ca55"
+  description: "Issue has been confirmed"
+
+- name: "status: in progress"
+  color: "fbca04"
+  description: "Currently being worked on"
+
+- name: "status: blocked"
+  color: "b60205"
+  description: "Blocked by another issue or external factor"
+
+# Contributor labels
+- name: "good first issue"
+  color: "7057ff"
+  description: "Good for newcomers"
+
+- name: "help wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+- name: "mentorship"
+  color: "c5def5"
+  description: "Maintainer will provide guidance"
+
+# Component labels
+- name: "area: parser"
+  color: "f9d0c4"
+  description: "Related to OpenAPI/GraphQL parsing"
+
+- name: "area: generator"
+  color: "f9d0c4"
+  description: "Related to code generators"
+
+- name: "area: cli"
+  color: "f9d0c4"
+  description: "Related to CLI functionality"
+
+- name: "area: plugins"
+  color: "f9d0c4"
+  description: "Related to plugin system"
+
+- name: "area: typescript"
+  color: "f9d0c4"
+  description: "Related to TypeScript generation"
+
+- name: "area: zod"
+  color: "f9d0c4"
+  description: "Related to Zod schema generation"
+
+- name: "area: react-query"
+  color: "f9d0c4"
+  description: "Related to React Query hooks"
+
+- name: "area: swr"
+  color: "f9d0c4"
+  description: "Related to SWR hooks"

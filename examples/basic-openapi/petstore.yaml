@@ -1,0 +1,380 @@
+openapi: '3.0.3'
+info:
+  title: Petstore API
+  description: A sample Pet Store API for testing Bridge code generation
+  version: '1.0.0'
+servers:
+  - url: https://api.petstore.example.com/v1
+    description: Production server
+
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      summary: List all pets
+      description: Returns all pets from the system
+      tags:
+        - pets
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of pets to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of pets to skip
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: status
+          in: query
+          description: Filter by status
+          required: false
+          schema:
+            $ref: '#/components/schemas/PetStatus'
+      responses:
+        '200':
+          description: A list of pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      operationId: createPet
+      summary: Create a pet
+      description: Creates a new pet in the store
+      tags:
+        - pets
+      requestBody:
+        description: Pet to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePetRequest'
+      responses:
+        '201':
+          description: Pet created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pets/{petId}:
+    get:
+      operationId: getPet
+      summary: Get a pet by ID
+      description: Returns a single pet by its ID
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          description: The ID of the pet to retrieve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A pet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      operationId: updatePet
+      summary: Update a pet
+      description: Updates an existing pet
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          description: The ID of the pet to update
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Updated pet data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePetRequest'
+      responses:
+        '200':
+          description: Pet updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      operationId: deletePet
+      summary: Delete a pet
+      description: Deletes a pet from the store
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          description: The ID of the pet to delete
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Pet deleted successfully
+        '404':
+          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pets/{petId}/photos:
+    post:
+      operationId: uploadPetPhoto
+      summary: Upload a pet photo
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                caption:
+                  type: string
+              required:
+                - file
+      responses:
+        '201':
+          description: Photo uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Photo'
+
+components:
+  schemas:
+    Pet:
+      type: object
+      description: A pet in the store
+      required:
+        - id
+        - name
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the pet
+        name:
+          type: string
+          description: Name of the pet
+          minLength: 1
+          maxLength: 100
+        species:
+          type: string
+          description: Species of the pet
+          enum:
+            - dog
+            - cat
+            - bird
+            - fish
+            - other
+        breed:
+          type: string
+          description: Breed of the pet
+        age:
+          type: integer
+          description: Age in years
+          minimum: 0
+          maximum: 50
+        status:
+          $ref: '#/components/schemas/PetStatus'
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags for categorizing the pet
+        owner:
+          $ref: '#/components/schemas/Owner'
+        createdAt:
+          type: string
+          format: date-time
+          description: When the pet was added to the store
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the pet was last updated
+
+    PetStatus:
+      type: string
+      description: Status of the pet in the store
+      enum:
+        - available
+        - pending
+        - sold
+
+    Owner:
+      type: object
+      description: Pet owner information
+      required:
+        - id
+        - name
+        - email
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+
+    CreatePetRequest:
+      type: object
+      description: Request body for creating a pet
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        species:
+          type: string
+          enum:
+            - dog
+            - cat
+            - bird
+            - fish
+            - other
+        breed:
+          type: string
+        age:
+          type: integer
+          minimum: 0
+        tags:
+          type: array
+          items:
+            type: string
+
+    UpdatePetRequest:
+      type: object
+      description: Request body for updating a pet
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        species:
+          type: string
+          enum:
+            - dog
+            - cat
+            - bird
+            - fish
+            - other
+        breed:
+          type: string
+        age:
+          type: integer
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/PetStatus'
+        tags:
+          type: array
+          items:
+            type: string
+
+    Photo:
+      type: object
+      required:
+        - id
+        - url
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        caption:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      description: Error response
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details

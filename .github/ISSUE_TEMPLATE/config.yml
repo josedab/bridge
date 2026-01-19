@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Ask a Question
+    url: https://github.com/bridge-codes/bridge/discussions/new?category=q-a
+    about: Ask questions and get help from the community
+  - name: Good First Issues
+    url: https://github.com/bridge-codes/bridge/labels/good%20first%20issue
+    about: Find issues that are great for first-time contributors
+  - name: Help Wanted
+    url: https://github.com/bridge-codes/bridge/labels/help%20wanted
+    about: Browse issues where maintainers are looking for community help
+  - name: Documentation
+    url: https://github.com/bridge-codes/bridge/labels/documentation
+    about: Help improve our documentation

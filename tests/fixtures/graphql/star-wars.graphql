@@ -1,0 +1,198 @@
+"""
+Star Wars GraphQL Schema for testing Bridge code generation
+"""
+
+"""
+A character from Star Wars
+"""
+interface Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode!]!
+}
+
+"""
+A Star Wars episode
+"""
+enum Episode {
+  """
+  Released in 1977
+  """
+  NEWHOPE
+  """
+  Released in 1980
+  """
+  EMPIRE
+  """
+  Released in 1983
+  """
+  JEDI
+}
+
+"""
+A human character from Star Wars
+"""
+type Human implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode!]!
+  """
+  Height in meters
+  """
+  height(unit: LengthUnit = METER): Float
+  """
+  Home planet of the human
+  """
+  homePlanet: String
+  """
+  Starships this human has piloted
+  """
+  starships: [Starship]
+}
+
+"""
+A droid character from Star Wars
+"""
+type Droid implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode!]!
+  """
+  Primary function of the droid
+  """
+  primaryFunction: String
+}
+
+"""
+A starship from Star Wars
+"""
+type Starship {
+  id: ID!
+  name: String!
+  """
+  Length of the starship in meters
+  """
+  length(unit: LengthUnit = METER): Float
+  """
+  Crew members of the starship
+  """
+  crew: [Human]
+  """
+  Coordinates in the galaxy
+  """
+  coordinates: [[Float!]!]
+}
+
+"""
+Units of length
+"""
+enum LengthUnit {
+  METER
+  FOOT
+}
+
+"""
+Search result union type
+"""
+union SearchResult = Human | Droid | Starship
+
+"""
+Input for creating a review
+"""
+input ReviewInput {
+  """
+  0-5 stars
+  """
+  stars: Int!
+  """
+  Optional commentary
+  """
+  commentary: String
+}
+
+"""
+A review of an episode
+"""
+type Review {
+  episode: Episode
+  stars: Int!
+  commentary: String
+}
+
+"""
+Pagination info
+"""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+"""
+Connection for paginated results
+"""
+type CharacterConnection {
+  edges: [CharacterEdge]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""
+Edge for character connection
+"""
+type CharacterEdge {
+  node: Character
+  cursor: String!
+}
+
+"""
+The root query type
+"""
+type Query {
+  """
+  Get a character by ID
+  """
+  character(id: ID!): Character
+  """
+  Get a human by ID
+  """
+  human(id: ID!): Human
+  """
+  Get a droid by ID
+  """
+  droid(id: ID!): Droid
+  """
+  Get the hero of a specific episode
+  """
+  hero(episode: Episode): Character
+  """
+  Search for characters, droids, or starships
+  """
+  search(text: String!): [SearchResult]
+  """
+  Get all reviews for an episode
+  """
+  reviews(episode: Episode!): [Review]
+  """
+  Get paginated characters
+  """
+  characters(first: Int, after: String): CharacterConnection!
+  """
+  Get a starship by ID
+  """
+  starship(id: ID!): Starship
+}
+
+"""
+The root mutation type
+"""
+type Mutation {
+  """
+  Create a review for an episode
+  """
+  createReview(episode: Episode!, review: ReviewInput!): Review
+}

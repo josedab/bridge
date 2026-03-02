@@ -75,7 +75,7 @@
     "@graphql-tools/load": "^8.0.0",
     "chokidar": "^4.0.0",
     "commander": "^12.0.0",
-    "graphql": "^16.8.0",
+    "graphql": "^16.13.0",
     "yaml": "^2.3.0"
   },
   "devDependencies": {
